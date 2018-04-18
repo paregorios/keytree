@@ -1,3 +1,3 @@
 #
-from factory import feature, geometry
-from kml import element
+from .factory import feature, geometry
+from .kml import element

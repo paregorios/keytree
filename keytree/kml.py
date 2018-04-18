@@ -65,9 +65,9 @@ def element(context, ob, **kw):
     """
     ns = context.tag.split('}')[0][1:]
     geo = getattr(ob, '__geo_interface__', ob)
-    if geo.has_key('id') or geo.has_key('geometry'): # is a feature
+    if 'id' in geo or 'geometry' in geo: # is a feature
         elem = placemark_element(context, ns, geo, **kw)
-    elif geo.has_key('type'): # is a geometry
+    elif 'type' in geo: # is a geometry
         elem = geometry_element(context, ns, geo)
     return elem
 
@@ -89,7 +89,7 @@ def coords_to_kml(geom):
     elif len(coords[0]) == 3:
         tuples = ('%f,%f,%f' % tuple(c) for c in coords)
     else:
-        raise ValueError, "Invalid dimensions"
+        raise ValueError("Invalid dimensions")
     return ' '.join(tuples)
 
 def geometry_element(context, ns, ob):
@@ -118,7 +118,7 @@ def placemark_element(context, ns, ob, **kw):
     sub_description_elem.text = kw.get('description') or ob.get(
         'properties', {}).get('content')
     pm_elem.append(sub_description_elem)
-    if ob.has_key('geometry'):
+    if 'geometry' in ob:
         sub_geom_elem = geometry_element(context, ns, ob.get('geometry'))
         pm_elem.append(sub_geom_elem)
     return pm_elem
